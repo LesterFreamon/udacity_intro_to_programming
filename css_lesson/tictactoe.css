@@ -1,0 +1,10 @@
+td {
+    background-color: rgb(180,210,240);
+    height: 60px;
+    width: 60px;
+    margin: 20px;
+    text-align: center;
+    font: normal normal 48px sans-serif;
+    border: 1px solid black;
+    margin: 100px;
+}
