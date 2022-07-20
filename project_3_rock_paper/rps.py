@@ -65,10 +65,10 @@ class ReflectPlayer(Player):
         self.next_move = their_move
 
 
-class CyclyPlayer(Player):
+class CyclePlayer(Player):
 
     def __init__(self):
-        self.next_move = random.choice(moves)
+        self.next_move = ROCK
 
     def move(self):
         return self.next_move
@@ -98,11 +98,15 @@ class Game:
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
+        self.p1.learn(move1, move2)
+        self.p2.learn(move2, move1)
         while move1 == move2:
             print_and_pause(f"Player 1: {move1}  Player 2: {move2}")
             print_and_pause("It is a tie. Try again.")
             move1 = self.p1.move()
             move2 = self.p2.move()
+            self.p1.learn(move1, move2)
+            self.p2.learn(move2, move1)
 
         print_and_pause(f"Player 1: {move1}  Player 2: {move2}")
         player_one_won = beats(move1, move2)
@@ -113,13 +117,11 @@ class Game:
             player_won = '2'
             self.p2_wins += 1
         print_and_pause(f"Player {player_won} won this round.")
-        self.p1.learn(move1, move2)
-        self.p2.learn(move2, move1)
 
     def play_game(self):
         print_and_pause("Game start!")
         for round in range(3):
-            print_and_pause(f"Round {round}:")
+            print_and_pause(f"Round {round + 1}:")
             self.play_round()
             print_and_pause(
                 f"The score is\nPlayer 1: "
@@ -128,10 +130,34 @@ class Game:
             if (self.p1_wins == 2) or (self.p2_wins == 2):
                 break
 
+        print_and_pause(
+            f"The final score is\nPlayer 1: "
+            f"{self.p1_wins}\nPlayer 2: {self.p2_wins}"
+        )
         winner = '1' if self.p1_wins > self.p2_wins else '2'
         print_and_pause(f"Incredible! Player {winner} won!!! Game over!")
 
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), CyclyPlayer())
+    strategies = {
+        "1": Player(),
+        "2": RandomPlayer(),
+        "3": CyclePlayer(),
+        "4": ReflectPlayer()
+    }
+
+    initial_input_request = (
+        "Select the player strategy "
+        "you want to play against"
+        "1- Rock Player"
+        "2- Random Player"
+        "3- Cycle Player"
+        "4- Reflect Player"
+    )
+
+    user_input = input(initial_input_request)
+    while user_input not in {'1', '2', '3', '4'}:
+        user_input = input(initial_input_request)
+
+    game = Game(HumanPlayer(), strategies[user_input])
     game.play_game()
