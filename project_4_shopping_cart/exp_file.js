@@ -14,3 +14,22 @@ function sayHello() {
 
 // function returns "Hello!" and console.log prints the return value
 console.log(sayHello());
+
+function makeLine(length) {
+    let line = "";
+    for (let j = 1; j <= length; j++) {
+        line += "* ";
+    }
+    return line + "\n";
+}
+
+function buildTriangle(size) {
+    let totalLines = "";
+    for (let i = 1; i <= size; i++) {
+        totalLines += makeLine(i);
+    }
+    return totalLines
+}
+
+
+console.log(buildTriangle(10));
