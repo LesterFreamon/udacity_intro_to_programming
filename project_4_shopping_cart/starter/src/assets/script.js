@@ -8,7 +8,7 @@
    - productId: unique id for the product (number)
    - image: picture of product (url string)
 */
-var totalPaid = 0;
+let totalPaid = 0;
 const cherry = {
     name: "Cherry",
     price: 1.09,
@@ -134,7 +134,6 @@ function getProductById(productId) {
             return strawberry;
             break;
         default:
-            console.log("No productId " + productId + " available.");
             return null;
     }
 }
